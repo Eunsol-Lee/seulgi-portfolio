@@ -1,0 +1,90 @@
+---
+import { useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="hero" id="hero">
+  <div class="hero__inner container">
+    <p class="hero__eyebrow reveal">{t('hero.eyebrow')}</p>
+    <h1 class="hero__name" id="hero-name">
+      {t('hero.name')}
+    </h1>
+    <p class="hero__tagline reveal">{t('hero.tagline')}</p>
+
+    <div class="hero__scroll-hint reveal" aria-hidden="true">
+      <span class="hero__scroll-arrow">&#8595;</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: var(--nav-height);
+    position: relative;
+  }
+
+  .hero__inner {
+    padding-block: var(--space-24);
+  }
+
+  .hero__eyebrow {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-accent);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__name {
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 40ch;
+    margin-inline: auto;
+  }
+
+  .hero__scroll-hint {
+    position: absolute;
+    bottom: var(--space-8);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .hero__scroll-arrow {
+    font-size: var(--text-lg);
+    color: var(--color-text-light);
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  @media (max-width: 768px) {
+    .hero__name {
+      letter-spacing: -0.02em;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/home/Hero.astro';
+import ProjectList from '@components/home/ProjectList.astro';
+import AboutSection from '@components/home/AboutSection.astro';
+import ContactSection from '@components/home/ContactSection.astro';
+import { useTranslations } from '@i18n/utils';
+
+const t = useTranslations('ko');
+---
+
+<BaseLayout title={t('site.title')} description={t('site.description')}>
+  <Hero lang="ko" />
+  <ProjectList lang="ko" />
+  <AboutSection lang="ko" />
+  <ContactSection lang="ko" />
+</BaseLayout>

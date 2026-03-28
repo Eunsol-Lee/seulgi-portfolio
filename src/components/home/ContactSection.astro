@@ -1,0 +1,49 @@
+---
+import { useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="contact section" id="contact">
+  <div class="container">
+    <p class="section-label">{t('section.contact')}</p>
+    <h2 class="contact__heading reveal">{t('contact.heading')}</h2>
+    <a href="mailto:hello@seulgi.design" class="contact__email reveal">
+      hello@seulgi.design
+    </a>
+  </div>
+</section>
+
+<style>
+  .contact {
+    text-align: center;
+  }
+
+  .contact__heading {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-8);
+  }
+
+  .contact__email {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--color-accent-deep);
+    padding: var(--space-4) var(--space-8);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-full);
+    transition: all var(--duration-base) var(--ease-out-expo);
+  }
+
+  .contact__email:hover {
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+    box-shadow: var(--shadow-glow);
+  }
+</style>

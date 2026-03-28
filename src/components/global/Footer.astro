@@ -1,0 +1,124 @@
+---
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<footer class="footer section--alt">
+  <!-- CTA -->
+  <div class="footer__cta container">
+    <p class="section-label">{t('contact.heading')}</p>
+    <h2 class="footer__cta-heading">
+      <span>{t('footer.cta.line1')}</span>
+      <em>{t('footer.cta.line2')}</em>
+    </h2>
+    <a href="mailto:hello@seulgi.design" class="footer__email link-underline">
+      hello@seulgi.design
+    </a>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="footer__bar container">
+    <p class="footer__copy">{t('footer.copy')}</p>
+
+    <div class="footer__social">
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer__social-link link-underline">Instagram</a>
+      <a href="https://behance.net" target="_blank" rel="noopener noreferrer" class="footer__social-link link-underline">Behance</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer__social-link link-underline">LinkedIn</a>
+    </div>
+
+    <div class="footer__location">
+      <span>{t('footer.location')}</span>
+      <span class="footer__time" id="seoul-time"></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-32) var(--space-12);
+  }
+
+  .footer__cta {
+    text-align: center;
+    padding-bottom: var(--space-24);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .footer__cta-heading {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-8);
+  }
+
+  .footer__cta-heading span {
+    display: block;
+    color: var(--color-text-muted);
+  }
+
+  .footer__cta-heading em {
+    font-style: italic;
+    color: var(--color-accent-deep);
+  }
+
+  .footer__email {
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .footer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-8);
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+  }
+
+  .footer__social {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .footer__social-link {
+    font-weight: 500;
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .footer__social-link:hover {
+    color: var(--color-text);
+  }
+
+  .footer__location {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 768px) {
+    .footer__bar {
+      flex-direction: column;
+      gap: var(--space-4);
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  function updateSeoulTime() {
+    const el = document.getElementById('seoul-time');
+    if (!el) return;
+    const now = new Date();
+    const seoulTime = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Seoul',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(now);
+    el.textContent = seoulTime;
+  }
+
+  updateSeoulTime();
+  setInterval(updateSeoulTime, 60000);
+</script>

@@ -1,0 +1,126 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { useTranslations, getLocalizedPath } from '@i18n/utils';
+import { getCollection } from 'astro:content';
+
+const t = useTranslations('en');
+
+const posts = (await getCollection('blog', (entry) => entry.data.lang === 'en'))
+  .sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+
+<BaseLayout title={`Journal — ${t('nav.logo')}`} description="Thoughts on design">
+  <section class="blog-index section container">
+    <header class="blog-index__hero">
+      <p class="section-label">{t('section.journal')}</p>
+      <h1 class="blog-index__heading reveal">
+        Thoughts on<br /><em>Design</em>
+      </h1>
+      <p class="blog-index__desc reveal">
+        Notes from the studio. On materials, form, color, and the reasoning behind all of it.
+      </p>
+    </header>
+
+    <ul class="blog-index__grid">
+      {posts.map((post) => (
+        <li class="blog-card reveal">
+          <a href={getLocalizedPath(`/blog/${post.data.slug}`, 'en')} class="blog-card__link">
+            <div class="blog-card__meta">
+              <time class="blog-card__date">{post.data.date}</time>
+              <span class="blog-card__tag">{post.data.tag}</span>
+            </div>
+            <h3 class="blog-card__title">{post.data.title}</h3>
+            <p class="blog-card__excerpt">{post.data.excerpt}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-index__hero {
+    padding-top: calc(var(--nav-height) + var(--space-8));
+    margin-bottom: var(--space-16);
+  }
+
+  .blog-index__heading {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .blog-index__desc {
+    font-size: var(--text-lg);
+    max-width: 45ch;
+  }
+
+  .blog-index__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  .blog-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: box-shadow var(--duration-base) ease,
+                transform var(--duration-base) var(--ease-out-expo);
+  }
+
+  .blog-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+
+  .blog-card__link {
+    display: block;
+    padding: var(--space-8);
+  }
+
+  .blog-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .blog-card__date {
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  .blog-card__tag {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-accent-deep);
+    background-color: var(--color-accent-soft);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+  }
+
+  .blog-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    margin-bottom: var(--space-3);
+    color: var(--color-text);
+  }
+
+  .blog-card__excerpt {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .blog-index__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
