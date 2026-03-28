@@ -1,0 +1,397 @@
+---
+// CatFollower — A very cute cat that follows the cursor with a lazy delay
+---
+
+<div class="cat" id="cat-follower" aria-hidden="true">
+  <div class="cat__body">
+    <!-- Ears -->
+    <div class="cat__ear cat__ear--left"></div>
+    <div class="cat__ear cat__ear--right"></div>
+    <!-- Face -->
+    <div class="cat__face">
+      <div class="cat__eye cat__eye--left">
+        <div class="cat__pupil"></div>
+      </div>
+      <div class="cat__eye cat__eye--right">
+        <div class="cat__pupil"></div>
+      </div>
+      <div class="cat__nose"></div>
+      <div class="cat__mouth"></div>
+      <!-- Whiskers -->
+      <div class="cat__whiskers cat__whiskers--left">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="cat__whiskers cat__whiskers--right">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <!-- Blush -->
+    <div class="cat__blush cat__blush--left"></div>
+    <div class="cat__blush cat__blush--right"></div>
+    <!-- Tail -->
+    <div class="cat__tail"></div>
+    <!-- Paws -->
+    <div class="cat__paw cat__paw--left"></div>
+    <div class="cat__paw cat__paw--right"></div>
+  </div>
+</div>
+
+<style>
+  .cat {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+  }
+
+  .cat__body {
+    position: relative;
+    width: 40px;
+    height: 36px;
+    background: #3a3a3a;
+    border-radius: 50% 50% 45% 45%;
+    transition: transform 0.15s ease;
+  }
+
+  /* Ears */
+  .cat__ear {
+    position: absolute;
+    top: -8px;
+    width: 12px;
+    height: 14px;
+    background: #3a3a3a;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .cat__ear--left {
+    left: 4px;
+    transform: rotate(-8deg);
+  }
+
+  .cat__ear--right {
+    right: 4px;
+    transform: rotate(8deg);
+  }
+
+  .cat__ear::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 7px;
+    background: #E8C4B8;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  /* Face */
+  .cat__face {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 20px;
+  }
+
+  /* Eyes */
+  .cat__eye {
+    position: absolute;
+    top: 2px;
+    width: 9px;
+    height: 9px;
+    background: white;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .cat__eye--left { left: 2px; }
+  .cat__eye--right { right: 2px; }
+
+  .cat__pupil {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #2a2a2a;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.1s ease;
+  }
+
+  .cat__pupil::after {
+    content: '';
+    position: absolute;
+    top: 0.5px;
+    right: 0.5px;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  /* Nose */
+  .cat__nose {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 3px;
+    background: #E8C4B8;
+    border-radius: 50% 50% 40% 40%;
+  }
+
+  /* Mouth */
+  .cat__mouth {
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 4px;
+  }
+
+  .cat__mouth::before,
+  .cat__mouth::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 5px;
+    height: 4px;
+    border-bottom: 1.5px solid #666;
+    border-radius: 0 0 50% 50%;
+  }
+
+  .cat__mouth::before { left: 0; }
+  .cat__mouth::after { right: 0; }
+
+  /* Whiskers */
+  .cat__whiskers {
+    position: absolute;
+    top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cat__whiskers--left { left: -8px; }
+  .cat__whiskers--right { right: -8px; }
+
+  .cat__whiskers span {
+    display: block;
+    width: 10px;
+    height: 1px;
+    background: #888;
+    border-radius: 1px;
+  }
+
+  .cat__whiskers--left span:nth-child(1) { transform: rotate(-10deg); }
+  .cat__whiskers--left span:nth-child(3) { transform: rotate(10deg); }
+  .cat__whiskers--right span:nth-child(1) { transform: rotate(10deg); }
+  .cat__whiskers--right span:nth-child(3) { transform: rotate(-10deg); }
+
+  /* Blush */
+  .cat__blush {
+    position: absolute;
+    top: 16px;
+    width: 7px;
+    height: 4px;
+    background: rgba(232, 196, 184, 0.6);
+    border-radius: 50%;
+  }
+
+  .cat__blush--left { left: 3px; }
+  .cat__blush--right { right: 3px; }
+
+  /* Tail */
+  .cat__tail {
+    position: absolute;
+    bottom: 2px;
+    right: -10px;
+    width: 18px;
+    height: 10px;
+    border-top: 3px solid #3a3a3a;
+    border-right: 3px solid #3a3a3a;
+    border-radius: 0 60% 0 0;
+    transform-origin: left bottom;
+    animation: tail-wag 1.5s ease-in-out infinite;
+  }
+
+  @keyframes tail-wag {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(15deg); }
+  }
+
+  /* Paws */
+  .cat__paw {
+    position: absolute;
+    bottom: -4px;
+    width: 8px;
+    height: 6px;
+    background: #3a3a3a;
+    border-radius: 0 0 50% 50%;
+  }
+
+  .cat__paw--left { left: 6px; }
+  .cat__paw--right { right: 6px; }
+
+  /* Walking animation when moving */
+  .cat.is-moving .cat__paw--left {
+    animation: paw-walk-left 0.3s ease-in-out infinite;
+  }
+
+  .cat.is-moving .cat__paw--right {
+    animation: paw-walk-right 0.3s ease-in-out infinite;
+  }
+
+  @keyframes paw-walk-left {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  @keyframes paw-walk-right {
+    0%, 100% { transform: translateY(-3px); }
+    50% { transform: translateY(0); }
+  }
+
+  /* Sleeping state (when cursor is still) */
+  .cat.is-sleeping .cat__eye {
+    height: 2px;
+    top: 5px;
+    background: none;
+    border-bottom: 2px solid #555;
+    border-radius: 0;
+  }
+
+  .cat.is-sleeping .cat__pupil {
+    display: none;
+  }
+
+  .cat.is-sleeping .cat__body {
+    transform: scale(1.05) translateY(2px);
+  }
+
+  .cat.is-sleeping .cat__tail {
+    animation: tail-sleep 3s ease-in-out infinite;
+  }
+
+  @keyframes tail-sleep {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
+  }
+
+  /* Zzz */
+  .cat.is-sleeping::after {
+    content: 'z z';
+    position: absolute;
+    top: -14px;
+    right: -8px;
+    font-size: 8px;
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-text-light);
+    letter-spacing: 2px;
+    animation: zzz 2s ease-in-out infinite;
+  }
+
+  @keyframes zzz {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 0.8; transform: translateY(-4px); }
+  }
+
+  /* Flip when moving left */
+  .cat.is-flipped .cat__body {
+    transform: scaleX(-1);
+  }
+
+  /* Hide on touch */
+  @media (hover: none) {
+    .cat {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const cat = document.getElementById('cat-follower');
+  if (cat && window.matchMedia('(hover: hover)').matches) {
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let catX = mouseX;
+    let catY = mouseY;
+    let lastMouseX = mouseX;
+    let idleTimer: ReturnType<typeof setTimeout>;
+    let isMoving = false;
+
+    const pupils = cat.querySelectorAll<HTMLElement>('.cat__pupil');
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // Cat is moving
+      if (!isMoving) {
+        isMoving = true;
+        cat.classList.add('is-moving');
+        cat.classList.remove('is-sleeping');
+      }
+
+      // Flip direction
+      if (mouseX < lastMouseX - 2) {
+        cat.classList.add('is-flipped');
+      } else if (mouseX > lastMouseX + 2) {
+        cat.classList.remove('is-flipped');
+      }
+      lastMouseX = mouseX;
+
+      // Reset idle timer
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        isMoving = false;
+        cat.classList.remove('is-moving');
+        // Fall asleep after being idle
+        setTimeout(() => {
+          if (!isMoving) {
+            cat.classList.add('is-sleeping');
+          }
+        }, 2000);
+      }, 150);
+    });
+
+    // Lazy follow with lerp — cat follows slower than cursor
+    function animate() {
+      const dx = mouseX - catX;
+      const dy = mouseY - catY;
+
+      // Cat follows with a lazy delay (0.06 = very lazy cat)
+      catX += dx * 0.06;
+      catY += dy * 0.06;
+
+      cat.style.transform = `translate(${catX - 20}px, ${catY + 20}px)`;
+
+      // Move pupils toward cursor
+      const pupilOffsetX = Math.max(-2, Math.min(2, dx * 0.01));
+      const pupilOffsetY = Math.max(-1.5, Math.min(1.5, dy * 0.01));
+      pupils.forEach((pupil) => {
+        pupil.style.transform = `translate(${pupilOffsetX}px, ${pupilOffsetY}px)`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Hide when cursor leaves
+    document.addEventListener('mouseleave', () => {
+      cat.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      cat.style.opacity = '1';
+    });
+  }
+</script>
